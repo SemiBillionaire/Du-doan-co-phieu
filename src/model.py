@@ -1,8 +1,11 @@
-# src/model.py
+import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tensorflow.keras.callbacks import ModelCheckpoint
 import os
+
+seed_value = 42
+tf.random.set_seed(seed_value)
 
 def build_model(timestep=50):
     model = Sequential()
@@ -17,6 +20,7 @@ def train_model(model, model_path, x_train, y_train, epochs=100, batch_size=50, 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     best_model = ModelCheckpoint(model_path, monitor='val_loss', verbose=2, save_best_only=True, mode='auto')
-    model.fit(x_train, y_train, epochs=100, batch_size=50, verbose=2, callbacks=[best_model])
+    # model.fit(x_train, y_train, epochs=100, batch_size=50, verbose=2, callbacks=[best_model])
+    model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, verbose=2, shuffle=False, callbacks=[best_model])
     model.save(os.path.join(output_dir, f'model_{stock_name}.h5'))
     return model

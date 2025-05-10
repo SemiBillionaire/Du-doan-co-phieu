@@ -10,7 +10,8 @@ stock_files = {
     'VNM': 'data/VNM.csv',
     'FPT': 'data/FPT.csv',
     'HPG': 'data/HPG.csv',
-    'MBB': 'data/MBB.csv'
+    'MBB': 'data/MBB.csv',
+    'HAG': 'data/HAG.csv'
 }
 
 timestep = 50

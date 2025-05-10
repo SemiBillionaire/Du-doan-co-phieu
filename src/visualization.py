@@ -1,4 +1,3 @@
-# src/visualization.py
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 import os

@@ -1,7 +1,12 @@
-# src/predict.py
 import numpy as np
 import pandas as pd
 from datetime import timedelta
+import random
+import tensorflow as tf
+
+np.random.seed(42)
+random.seed(42)
+tf.random.set_seed(42)
 
 def predict_historical(model, x_train, x_test, sc):
     y_train_predict = model.predict(x_train)
