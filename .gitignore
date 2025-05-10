@@ -1,0 +1,4 @@
+# Bỏ qua thư mục môi trường ảo Python
+venv/
+__pycache__/
+*.pyc

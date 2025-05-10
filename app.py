@@ -2,7 +2,7 @@ import os
 from src.data_processing import load_data, prepare_data
 from src.model import build_model, train_model
 from src.predict import predict_historical, predict_future
-from src.visualization import plot_comparison, plot_future
+from src.visualization import plot_comparison, plot_future, visualize_data
 from tensorflow.keras.models import load_model
 
 # Danh sách các file cổ phiếu
@@ -35,10 +35,11 @@ def get_user_choice():
         print("\nBạn muốn:")
         print(f"1. Nhận dự đoán xu hướng tài chính 3 năm tới của {stock_name}")
         print("2. Kiểm tra độ chính xác của mô hình")
-        choice = input("Nhập lựa chọn (1 hoặc 2): ").strip()
-        if choice in ['1', '2']:
+        print(f"3. Trực quan hóa dữ liệu lịch sử của {stock_name}")
+        choice = input("Nhập lựa chọn: ").strip()
+        if choice in ['1', '2', '3']:
             return choice
-        print("Lựa chọn không hợp lệ. Vui lòng nhập 1 hoặc 2.")
+        print("Lựa chọn không hợp lệ. Vui lòng nhập 1, 2 hoặc 3.")
 
 # Tải và xử lý dữ liệu
 df1 = load_data(file_path)
@@ -74,3 +75,7 @@ elif choice == '2':
     # Kiểm tra độ chính xác (so sánh thực tế và dự đoán)
     y_train_predict, y_test_predict = predict_historical(model, x_train, x_test, sc)
     plot_comparison(df1, y_train_predict, y_test_predict, train_size, timestep, stock_name=stock_name)
+    
+elif choice == '3':
+    # Trực quan hóa dữ liệu
+    visualize_data(df1, stock_name=stock_name)

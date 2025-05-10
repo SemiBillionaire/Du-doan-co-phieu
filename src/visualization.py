@@ -50,3 +50,24 @@ def plot_future(df1, future_df, output_dir='output/predict', stock_name='VNM'):
     plt.savefig(output_path, dpi=300)
     plt.close()
     print(f"Biểu đồ dự đoán đã được lưu tại: {output_path}")
+
+def visualize_data(df1, output_dir='output/data_visualization_analysis', stock_name='VNM'):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    # Đọc lại file CSV để lấy thêm các cột
+    plt.figure(figsize=(12, 6))
+    plt.plot(df1.index, df1['Lần cuối'], label='Giá lịch sử', color='red')
+    plt.title(f'Biểu đồ giá cổ phiếu {stock_name} theo thời gian')
+    plt.xlabel('Thời gian')
+    plt.ylabel('Giá Lần cuối (VNĐ)')
+    plt.legend()
+    plt.grid(True)
+    plt.gca().xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    
+    output_path = os.path.join(output_dir, f"{stock_name}_price_visualization.png")
+    plt.savefig(output_path, dpi=300)
+    plt.close()
+    print(f"Đã lưu biểu đồ vào: {output_path}")
