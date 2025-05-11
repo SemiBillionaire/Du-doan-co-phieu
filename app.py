@@ -79,4 +79,4 @@ elif choice == '2':
     
 elif choice == '3':
     # Trực quan hóa dữ liệu
-    visualize_data(df1, stock_name=stock_name)
+    visualize_data(stock_name=stock_name)
