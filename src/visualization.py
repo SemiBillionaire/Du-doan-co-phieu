@@ -1,6 +1,18 @@
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
+import seaborn as sns
+import pandas as pd
 import os
+
+def convert_volume(value):
+    """Hàm chuyển đổi giá trị khối lượng (KL) từ dạng string sang float."""
+    value = str(value).strip()  # Chuyển thành string và loại bỏ khoảng trắng
+    if 'M' in value:
+        return float(value.replace('M', '')) * 1000000  # Nhân với 1 triệu
+    elif 'K' in value:
+        return float(value.replace('K', '')) * 1000  # Nhân với 1 nghìn
+    else:
+        return float(value)  # Giữ nguyên nếu không có ký hiệu
 
 def plot_comparison(df1, y_train_predict, y_test_predict, train_size, timestep=50, output_dir='output/comparison', stock_name='VNM'):
     if not os.path.exists(output_dir):
@@ -70,3 +82,26 @@ def visualize_data(df1, output_dir='output/data_visualization_analysis', stock_n
     plt.savefig(output_path, dpi=300)
     plt.close()
     print(f"Đã lưu biểu đồ vào: {output_path}")
+
+    df_raw = pd.read_csv(f'data/{stock_name}.csv')
+    df_raw['Ngày'] = pd.to_datetime(df_raw['Ngày'], format='%d/%m/%Y')
+    df_raw = df_raw.sort_values(by='Ngày')
+    df_raw.set_index('Ngày', inplace=True)
+
+    numeric_cols = ['Lần cuối', 'Mở', 'Cao', 'Thấp', 'KL']
+    for col in numeric_cols:
+        if col == 'KL':  # Xử lý cột KL riêng
+            df_raw[col] = df_raw[col].apply(convert_volume)
+        else:  # Xử lý các cột giá
+            df_raw[col] = df_raw[col].str.replace(',', '').astype(float)
+    corr_matrix = df_raw[numeric_cols].corr()
+    
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, center=0, fmt='.2f')
+    plt.title(f'Heatmap tương quan giá cổ phiếu {stock_name}')
+    plt.tight_layout()
+
+    heatmap_output_path = os.path.join(output_dir, f"{stock_name}_correlation_heatmap.png")
+    plt.savefig(heatmap_output_path, dpi=300)
+    plt.close()
+    print(f"Đã lưu heatmap vào: {heatmap_output_path}")
