@@ -97,9 +97,9 @@ def visualize_data(stock_name='VNM'):
     start_date = '2020-05-10'
     end_date = '2025-05-10'
     quarterly_df = df[(df.index >= start_date) & (df.index <= end_date) & 
-                      (df.index.month.isin([3, 6, 7, 9, 12]))]
+                      (df.index.month.isin([3,6, 9, 12]))]
     # Lấy ngày cuối cùng của mỗi quý
-    quarterly_df = quarterly_df.resample('QE').last().dropna()
+    quarterly_df = quarterly_df.resample('ME').last().dropna()
 
     # 1. Candlestick Chart
     candlestick_df = quarterly_df[['Open', 'High', 'Low', 'Close']].copy()
